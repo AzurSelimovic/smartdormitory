@@ -32,7 +32,7 @@
           <nav>
             <ul>
               <li><a href="index.php">Home</a></li>
-              <li><a href="news_board.php">News</a></li>
+              <li><a href="index.php">News</a></li>
               <li><a href="index.php">Gallery</a></li>
               <li><a href="index.php">Contact Us</a></li>
             </ul>
@@ -60,20 +60,20 @@
     <div class="container">
     <?php
     if(empty($_SESSION["username"]) && empty($_SESSION['password'])) { // U suprotnom ako je session postavljen, odnosno ako je korisnik prijavljenn izvrsit ce se dio koda od 63. - 76. linije koda
-      echo"<div class='row'>
-      <div class='col-md-3'></div>
-      <div class='col-md-6'>
-      <div align='center'>
-      <h1 style='font-size: 85px'>SmartDormitory</h1>
-      </div>
-      <h2>Sign In:</h2>
-      <form id='login-form' action='login.php' method='post'>
-        <input id='login_input' style='color: #000000' type='text' name='username' placeholder='Enter your username...'><br>
-        <input id='login_input' style='color: #000000' type='password' name='password' placeholder='*********'><br>
-        <input id='login-button' type='submit' value='Sign In''>
-      </form></div>
-      <div class='col-md-3'></div>
-      </div>";
+      echo"";
+          $sql1 = mysqli_query($conn,"SELECT * FROM news_board ORDER BY id DESC");
+         while( $row1=mysqli_fetch_array($sql1)){
+                echo"
+                <div id='news_box'>
+                    <div align='center'>
+                    <img class='news_img' src=".$row1['news_img']." align='middle'>
+                    </div>
+                    <h4 class='news_header'>".$row1['news_header']."</h4>
+                    <hr/>
+                    <p class='article_text'>".$row1['article_text']."</p>
+                    </div>";
+                }
+                echo "";
     }
     else {
       echo"

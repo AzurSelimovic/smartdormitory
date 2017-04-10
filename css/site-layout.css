@@ -36,11 +36,12 @@ body {
   margin-top: 50px;
 }
 #login-form input {
-  float: left;
+  
   width: 80%;
   height: 40px;
   margin: 10px;
   border-radius: 5px;
+  color: #000000;
 }
 #login-button {
   background-color: #D05821;
@@ -71,4 +72,55 @@ body {
 }
 #navigation i:hover {
   color: #666666;
+}
+#personal-info {
+  padding: 25px;
+  color: #000000;
+}
+#personal-info nav ul {
+  margin: 0;
+  padding: 0;
+}
+#personal-info nav ul li {
+  width: 200px;
+  height: 50px;
+  line-height: 50px;
+  background-color: #14143d;
+  border-radius: 5px;
+  text-align: center;
+  list-style-type: none;
+  margin: 10px;
+}
+#personal-info nav ul li a {
+  color: #ffffff;
+  text-decoration: none;
+}
+#personal-info nav ul li a:hover {
+  background-color: #0a0a1e;
+  display: block;
+  border-radius: 5px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    text-align: center;    
+}
+#news_box {
+    width: 40%;
+    height: auto;
+    margin: 3%;
+    background-color: #EEEEEE;
+    padding: 3%;
+    border-radius: 5px;
+    float: left;
+    color: #000000;
+}
+.news_img {
+    width: 95%;
+    height: 180px;
+    border:1px solid #021a40;
+    margin-bottom: 20px;
 }
