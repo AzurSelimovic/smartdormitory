@@ -1,0 +1,84 @@
+﻿html {
+    height: 100%;
+}
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('DSC_1769.jpg');
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+#left-menuBar {
+    float: left;
+    width: 27%;
+    background-color: #567BA0;
+    padding: 10px;
+    opacity: 0.95;
+    height: 100%;
+}
+#profile_info img {
+    width: 100px;
+    border-radius: 100%;
+}
+#profile_info h3 {
+    float: left;
+    margin: 0;
+    color: #ffffff;
+}
+#info {
+    margin-bottom: 5px;
+    width: 70%;
+}
+a {
+    text-decoration: none !important;
+    color: #ffffff;
+    display: block;
+}
+
+#main {
+    margin:0;
+    float: right;
+    width: 73%;
+    text-align: left;
+    background-color: #ffffff;
+    opacity: 0.9;
+    height: 100%;
+    padding: 10px;
+    overflow: scroll;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    text-align: center;    
+}
+a:hover {
+    color: #ffffff !important;
+}
+#news_box {
+    width: 40%;
+    height: auto;
+    margin: 3%;
+    background-color: #EEEEEE;
+    padding: 3%;
+    border-radius: 5px;
+    float: left;
+}
+.news_img {
+    width: 95%;
+    height: 180px;
+       border:1px solid #021a40;
+       margin-bottom: 20px;
+}
+.sreachS {
+    margin-bottom: 20px;
+}
+#button_large2 {
+    width: 100%;
+    color: red;
+}

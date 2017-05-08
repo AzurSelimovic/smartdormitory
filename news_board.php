@@ -1,101 +1,100 @@
 <?php
-  require("includes/connection.php");
-  session_start();
-  if(empty($_SESSION['username']) && empty($_SESSION['type'])) {  // Program provjera da li je session postavljen(da li je korsnik prijavljen ili ne), jer se tokom uspjesnog prijavljivanja korisnika postavlja u session(username,password,type,img_url)
-  }
-  else  { // U slucaju da je session postavljen( korisnik prijavljen ), izvrsit ce se ovaj dio programa
-  $username = $_SESSION['username'];
-  $username = $_SESSION['username'];
-  $password = $_SESSION['password'];
-  $img_url = $_SESSION['img_url'];
-  $query = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username' and password = '$password'");
-  }
-?>
- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SmartDormitory | Index</title>
+    session_start();
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    require('connection.php');
+    if(empty($_SESSION['mUserId'])  && empty($_SESSION['password']))
+        {
+            header("Location: login.php");
+        }
+        else{
+        $userID = $_SESSION['mUserId'];
+        $password = $_SESSION['password'];
+        $sql = mysqli_query($conn,"SELECT * FROM user WHERE id = '$userID' and password = '$password'");
+        $row = mysqli_fetch_array($sql);
+        $firstName = $row['fname'];
+        $lastName = $row['lname'];
+        $_SESSION['fname'] = $firstName;
+        $_SESSION['lname'] = $lastName;
+        $_SESSION['img_url'] = $row['img_url'];
+        $img_url0 = $row['img_url'];
+        $img_url = "img/" . $img_url0;
+        $sql1 = mysqli_query($conn,"SELECT * FROM news_board ORDER BY id DESC");
+        echo "<!DOCTYPE html>
+<html>
+<head>
+    <title>SmartDormitory | Dashboard</title>
+	<meta charset='utf-8' />
+    <link rel='shortcut icon' href='img/finlogo.png' type='image/x-icon'>
     <!-- CSS -->
-    <link href='css/site-layout.css' rel="stylesheet" type="text/css">
-  </head>
-  <body>
-    <section id="navBar">
-      <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <nav>
-            <ul>
-              <li><a href="index.php">Home</a></li>
-              <li><a href="index.php">News</a></li>
-              <li><a href="index.php">Gallery</a></li>
-              <li><a href="index.php">Contact Us</a></li>
-            </ul>
-          </nav>
-        </div>
-        <div class="col-md-6">
-              <div align="right">
-              <?php
-              if(empty($_SESSION['username']) && empty($_SESSION['password'])) {
-              echo "
-             <button id='sr' type='button' class='btn btn-warning'>Sign In</button>
-             <a href='register_page.php'><button id='sr' type='button' class='btn btn-warning'>Sign Up</button></a>";
-           }else {
-             echo "<h4>Hi, $username | <a href='logout.php'>Log Out</a></h4><br>
-             <h5><a href='#'>Notifications</a> | <a href='#'>Control Panel</a> | <a href='#'> Settings</a><h5>
-             ";
-           }
-           ?>
-           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section id="content">
-    <div class="container">
-    <?php
-    if(empty($_SESSION["username"]) && empty($_SESSION['password'])) { // U suprotnom ako je session postavljen, odnosno ako je korisnik prijavljenn izvrsit ce se dio koda od 63. - 76. linije koda
-      echo"";
-          $sql1 = mysqli_query($conn,"SELECT * FROM news_board ORDER BY id DESC");
-         while( $row1=mysqli_fetch_array($sql1)){
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css' integrity='sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi' crossorigin='anonymous'>
+    <link href='css/index.css' rel='stylesheet' type='text/css'>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js' integrity='sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK' crossorigin='anonymous'></script>
+</head>
+<body>
+        <sesction id='dashboard'>
+            <!--Menu-->
+            <div id='left-menuBar'>
+                <!-- PrfileInformationSection-->
+                <div id='profile_info'>
+                    <div class='row'>
+                        <div class='col-md-6'>
+                            <div align='center'>
+                            <img src='$img_url' width='100px' height='101.5px' />
+                            <h3>$firstName  $lastName</h3>
+                             </div>
+                        </div>
+                        <div class='col-md-6'>
+                           <div align='center'>
+                               <button id='info' type='button' class='btn btn-warning'><a href='settings.php'>Postavke</a></button>
+                               <button id='info' type='button' class='btn btn-warning'>Pomoć</button>
+                               <a href='logout.php'><button id='info' type='button' class='btn btn-success'>Odjavi se</button></a>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PIS END-->
+                <hr />
+                <!-- NAV TABS-->
+                <div id='nav-tabs'>
+                    <div align='center'>
+                    <a href='about.php'><button id='info' type='button' class='btn btn-info'>O $firstName $lastName<!--php_code--></button></a>
+                    <a href='news_board.php'><button id='info' type='button' class='btn btn-info'>Oglasna Ploča<!--php_code--></button></a>
+                    ";if( $_SESSION['account_type'] == "admin"){echo"<a href='bodovni_sistem.php'><button id='info' type='button' class='btn btn-info'>Bodovni Sistem<!--php_code--></button></a>";}
+                    echo"
+                    <a href='subject_r.php'><button id='info' type='button' class='btn btn-info'>Ocjene<!--php_code--></button></a>";
+                    if( $_SESSION['account_type'] == "admin"){echo"<a href='create_account.php'><button id='info' type='button' class='btn btn-info'>Kreiraj korisnički račun<!--php_code--></button></a>
+                    <a href='student_list.php'><button id='info' type='button' class='btn btn-info'>Lista učenika<!--php_code--></button></a>
+                    <a href='action_log.php'><button id='info' type='button' class='btn btn-info'>Action Log<!--php_code--></button></a>
+                ";}
+                echo"
+                </div>
+                    </div>
+                <!-- NT END-->
+                <hr />
+            </div>
+            <!-- Menu END-->
+            <div id='main'>";
+            if( $_SESSION['account_type'] == "admin"){
+                echo "<button style='float:right;' type='button' class='btn btn-info'><a href='add_news.php'>Dodaj vijest<!--php_code--></a></button><br/><hr style='margin-top: 20px;'/>";
+            }
+            while( $row1=mysqli_fetch_array($sql1)){
                 echo"
                 <div id='news_box'>
                     <div align='center'>
-                    <img class='news_img' src=".$row1['news_img']." align='middle'>
+                    <img class='news_img' src='news_articles/".$row1['news_img']."' align='middle'>
                     </div>
-                    <h4 class='news_header'>".$row1['news_header']."</h4>
+                    <h4 class='news_header'>".$row1['news_title']."</h4>
                     <hr/>
-                    <p class='article_text'>".$row1['article_text']."</p>
+                    <p class='article_text'>".$row1['news_texts']."</p>
                     </div>";
                 }
-                echo "";
-    }
-    else {
-      echo"
-      <h3>Members list:</h3><table>
-            <tr><th>-</th><th>Username </th><th>E-mail</th><th>See more</th></tr>
-                    ";
-                    $sql1 =mysqli_query($conn,"SELECT * FROM users WHERE type=''");
-                    $brojac = 0;
-                    while($row1 = mysqli_fetch_array($sql1)){
-                        $brojac = $brojac + 1 ;
-                        echo "<tr><td>".$brojac ."</td><td>". $row1['username'] ."</td><td>". $row1['email']."</td><td><button type='button' class='btn btn-info'>Manage</button></a></td></tr>";
-                    }
-            echo"
-            </table>";
-    }
-  ?>
-  </div>
-  </section>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-  </body>
+            echo"
+            </div>
+        </sesction>
+</body>
 </html>
+"
+        ;
+        }
+?>

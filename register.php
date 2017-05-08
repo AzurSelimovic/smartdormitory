@@ -1,31 +1,27 @@
 <?php
-  require('includes/connection.php');
-  $username = $_POST['username']; //Prikupljanje unesenih podataka iz forme kreirane u register_page.php, metodom POST($_POST['username'],$_POST['password']...)
-  $password = $_POST['password'];
-  $re_password = $_POST['re-password'];
-  $email = $_POST['email'];
-  $type = $_POST['type'];
-  $check_query = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'"); // $check_query pretrazuje bazu u slucaju da ima vec neki korisnik registrovan pod istim korisnickim imenom
-  $check_row = mysqli_fetch_array($check_query);
-    if($check_row['username'] == $username) { // U slucaju da se korisnik pokusava registrovati sa vec registrovanim korisnickim imenom, ispisuje mu se poruka "Username alredy in use!"
-      echo"Username alredy in use!";
-    }
-    else if($check_row['email'] == $email){ // U slucju da se korisnik pokusava registrovati sa vec registrovanom e-mail adresom, ispusuje mu se poruka "This e-mail adress is alredy in use!"
-      echo"This e-mail adress is alredy in use!";
-    }
-    else { // I na kraju naseg algoritma autentifikacije, program provjerava da li podaduraju sifre koje je korisnik unio
-      if($password == $re_password) { // Ako se sifre podudaraju, i svi gornji uslovi su ispunjeni, odnodno u ovom slucaju nisu korisnik se uspjesno registruje
-        $default = "includes/default.png";
-        $e_pass = crypt($password,'ww');
-        $register_query = mysqli_query($conn, "INSERT INTO users (username, password, email, type, img_url) VALUES ('$username','$e_pass','$email','$type','$default')");
-        header("Location: index.php");
-        if(!$register_query) {
-          echo"Could't create account, try again!";
-        }
-      }
-      else {
-        echo "Choosen passwords doesn't match!";
-      }
-    }
+    session_start();
+    require('connection.php');
+    $fName = $_POST['fName'];
+    $lName = $_POST['lName'];
+    $email = $_POST['date_of_b'];
+    $pass1 = $_POST['user_password'];
+    $type = $_POST['type'];
+    $date_of_b = $_POST['date_of_b'];
+    $img = 'img/47199326-profile-pictures.png';
+    $_SESSION['current_user_fName'] = $fName;
+    $_SESSION['current_user_lName'] = $lName;
+    $userID = $_SESSION['mUserId'];
 
+    if($fName != NULL && $lName != NULL && $pass1 != NULL && $type != NULL) {
+                $sql = "INSERT INTO user (fname,lname,password,type,img_url,date_b) VALUES ('$fName','$lName','$pass1','$type','$img','$date_of_b')";
+                mysqli_query($conn,$sql);
+                $row = mysqli_query($conn,"SELECT id FROM user WHERE email = '$email' and password = '$pass1'");
+                $ar = mysqli_fetch_array($row);
+                $action_query=mysqli_query($conn,"INSERT INTO action_log (mUserId,action) VALUES ('$userID','User Id $userID created account $fName $lName at')");
+                mail($email,"MTS | Registration id",$ar['id']);
+                header("Location: general_information.php");
+            }
+        else {
+                    echo"<p>All fields are required!</p>";
+                }
 ?>

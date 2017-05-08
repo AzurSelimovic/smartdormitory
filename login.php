@@ -1,21 +1,37 @@
-<?php
-  require("includes/connection.php");
-  session_start();
-  $username = $_POST['username'];
-  $password = $_POST['password'];
-  $e_pass = crypt($password,'ww'); // Unesena sifra prolazi kroz funkciju crypt, odnosno funkcija enkripcije.
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SmartDormitory | Login</title>
+    <link rel="shortcut icon" href="img/finlogo.png" type="image/x-icon">
+	<meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+    <link href="css/login_site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-3">
+            </div>
+        <div class="col-md-6">
+            <div id="logo">
+                <div align="center">
+                <img src="css/logo_izvor_nade.png" />
+                </div>
+            </div>
+            <div id="login_form">
+       <form action="login_a.php" method="post">
+        <p>Korisnički ID:</p><br/>
+           <hr />
+        <input type="text" name="mUserId" placeholder="Unesite svoj korisnički ID" required/><br/>
+        <p>Šifra:</p><br/>
+           <hr />
+        <input type="password" name="password" placeholder="******" required/><br/>
+        <input type="submit" value="Prijava"/>
 
-  $login_query = mysqli_query($conn,"SELECT username, type, password, img_url FROM users WHERE username = '$username' and password = '$e_pass'"); // $login_query pretrazuje bazu za korisnickim racunom s kojim se podudaraju uneseno korisnicko ime i sifra
-  $row1 = mysqli_fetch_array($login_query); // Sve zaprimljene podatke pohranjuje u array(polje) $row1
+    </form>
+            </div>
+            </div>
+        </div>
 
-  if($username == $row1['username'] && $e_pass == $row1['password']) { // Algoritam provjerava da li se unesena sifra podudara sa dobijenim podacima iz baze
-    $_SESSION['username'] = $row1['username'];
-    $_SESSION['type'] = $row1['type'];
-    $_SESSION['img_url'] = $row1['img_url'];
-    $_SESSION['password'] = $row1['password'];
-    header("Location: index.php"); // Ako je gornji uslov ($username == $row1['username'] && $e_pass == $row1['password']) ispunjen, svi podaci se pohranjuju u tzv. sesije(session), cookies i algoritam nas preusmjerava na index.php
-  }
-  else {
-    header("Location: failed_login.php"); // U slusaju da gornji uslov nije ispunjen, program nas presumjerava na failed_login.php
-  }
-?>
+</body>
+</html>
